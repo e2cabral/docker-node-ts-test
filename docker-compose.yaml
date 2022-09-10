@@ -1,0 +1,36 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mypassword"
+      PGDATA: /data/postgres
+    volumes:
+      - db:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  app:
+    container_name: service_app
+    image: old-service
+    volumes:
+      - app:/data/app
+    ports:
+      - "8080:8080"
+    networks:
+      - postgres
+    restart: always
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  db:
+  app:
