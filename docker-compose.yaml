@@ -18,7 +18,7 @@ services:
 
   app:
     container_name: service_app
-    image: old-service
+    image: e2cabral/docker-node-ts-test
     volumes:
       - app:/data/app
     ports:
