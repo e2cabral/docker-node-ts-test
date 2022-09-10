@@ -1,4 +1,4 @@
-FROM node:14
+FROM node:14 as builder
 
 WORKDIR /usr/src/app
 
@@ -10,11 +10,17 @@ COPY . .
 
 RUN npm run build
 
-#COPY ./build/src/ ./
-
 RUN rm -rf /src
 
-#RUN rm -rf /build
+FROM node:14-alpine
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY --from=builder /usr/src/app ./app
 
 EXPOSE 8080
 CMD [ "npm", "run", "start:docker"]
